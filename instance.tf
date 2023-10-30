@@ -14,9 +14,11 @@ provider "google" {
 
 resource "google_compute_instance" "terraform" {
         project = "unified-freedom-399620"
-        name = "terraform"
+        count = 3
+        name = "vm-terraform${count.index+1}"
         machine_type = "e2-medium"
-        zone = "us-central1-c"
+        for_each = toset(["us-central-1", "europe-west4-a", "asia-southeast2-a"])
+        zone = each.value
         boot_disk {
                 initialize_params {
                         image = "debian-cloud/debian-11"
